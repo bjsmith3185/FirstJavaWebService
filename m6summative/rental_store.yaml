@@ -1,0 +1,337 @@
+openapi: 3.0.0
+info: 
+  title: Rental Store Service
+  description: A simple service that returns data on customers, items, invoices, and invoice items
+  version: 0.0.1
+servers:
+  - url: http://localhost:8080
+    description: Local dev server
+paths:
+  /customer:
+    post:
+      summary: Inputs a first name, last name, email, company and phone number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Customer'
+      responses:
+        '201':
+          description: A customer object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Customer'
+    get:
+      summary: Returns all customers' first name, last name, email, company and phone number
+      responses:
+        '200':
+          description: All customer objects
+          content:
+            '*/*':
+              schema:
+                type: array
+                items: 
+                  $ref: '#/components/schemas/Customer'
+  /customer/{id}:
+    get:
+      summary: Retrieves the entry for the customer with the give ID.
+      parameters: 
+        - name: id
+          in: path
+          required: true
+          description: ID of the customer you would like to retrieve.
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Customer object matching given ID successfully retrieved.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Customer'
+    delete:
+      summary: Deletes the entry for the customer with the given ID.
+      parameters: 
+        - name: id
+          in: path
+          required: true
+          description: ID of the customer you would like to delete.
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '204':
+          description: Customer successfully deleted.
+    put:
+      summary: Updates the entry for the customer with the given ID.
+      parameters: 
+        - name: id
+          in: path
+          required: true
+          description: ID of the customer you would like to update.
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Customer'
+      responses:
+        '204':
+          description: Customer successfully updated.
+        '422':
+          description: Customer ID on path mush match the ID in the Customer object.
+  /item:
+    post:
+      summary: Inputs a name, description and daily Rate
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Item'
+      responses:
+        '201':
+          description: An item object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Item'
+    get:
+      summary: Returns all items' name, description, and daily rate
+      responses:
+        '200':
+          description: All item objects
+          content:
+            '*/*':
+              schema:
+                type: array
+                items: 
+                  $ref: '#/components/schemas/Item'
+  /item/{id}:
+    get:
+      summary: Retrieves the entry for the item with the give ID.
+      parameters: 
+        - name: id
+          in: path
+          required: true
+          description: ID of the item you would like to retrieve.
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Item object matching given ID successfully retrieved.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Item'
+    delete:
+      summary: Deletes the entry for the item with the given ID.
+      parameters: 
+        - name: id
+          in: path
+          required: true
+          description: ID of the item you would like to delete.
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '204':
+          description: Item successfully deleted.
+    put:
+      summary: Updates the entry for the item with the given ID.
+      parameters: 
+        - name: id
+          in: path
+          required: true
+          description: ID of the item you would like to update.
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Item'
+      responses:
+        '204':
+          description: Item successfully updated.
+        '422':
+          description: Item ID on path mush match the ID in the Item object.                
+  /invoice_item:
+    post:
+      summary: Inputs an invoice id, an item id, a quantity, a unit rate and a discount
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InvoiceItem'
+      responses:
+        '201':
+          description: An invoice item object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvoiceItem'
+  /invoice_item/{id}:
+    delete:
+        summary: Deletes the entry for the invoice item with the given ID.
+        parameters: 
+          - name: id
+            in: path
+            required: true
+            description: ID of the invoice item you would like to delete.
+            schema:
+              type: integer
+              format: int64
+        responses:
+          '204':
+            description: Invoice Item successfully deleted.
+  /invoice:
+    post:
+      summary: Inputs a customer id, an order date, a pickup date, a return date, adn a late fee
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Invoice'
+      responses:
+        '201':
+          description: An invoice object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Invoice'
+  /invoice/{id}:
+    delete:
+        summary: Deletes the entry for the invoice with the given ID.
+        parameters: 
+          - name: id
+            in: path
+            required: true
+            description: ID of the invoice you would like to delete.
+            schema:
+              type: integer
+              format: int64
+        responses:
+          '204':
+            description: Invoice successfully deleted.
+  /invoice/customer/{id}:
+    get:
+      summary: Returns all invoices for a customer with the customer id
+      parameters: 
+          - name: id
+            in: path
+            required: true
+            description: ID of the customer you would like invoices for
+            schema:
+              type: integer
+              format: int64
+      responses:
+        '200':
+          description: All invoice objects for a customer with matching customer id
+          content:
+            '*/*':
+              schema:
+                type: array
+                items: 
+                  $ref: '#/components/schemas/Invoice'
+components:
+  schemas:
+    Customer:
+      properties:
+        customerId:
+          type: integer
+        firstName:
+          type: string
+        lastName:
+          type: string
+        email:
+          type: string
+        company:
+          type: string
+        phone:
+          type: string
+      required: 
+        - firstName
+        - lastName
+        - email
+        - company
+        - phone
+    Item:
+      properties:
+        itemId:
+          type: integer
+        name:
+          type: string
+        description:
+          type: string
+        dailyRate:
+          type: number
+      required: 
+        - name
+        - description
+        - dailyRate
+    InvoiceItem:
+      properties:
+        invoiceItemId:
+          type: integer
+        invoiceId:
+          type: integer
+        itemId:
+          type: integer
+        quantity:
+          type: integer
+        unitRate:
+          type: number
+        discount:
+          type: number
+      required: 
+        - invoiceId
+        - itemId
+        - quantity
+        - unitRate
+        - discount
+    Invoice:
+      properties:
+        invoiceId:
+          type: integer
+        customer:
+          $ref: '#/components/schemas/Customer'
+        orderDate:
+          type: string
+        pickupDate:
+          type: string
+        returnDate:
+          type: string
+        lateFee:
+          type: number
+      required: 
+        - customer
+        - orderDate
+        - pickupDate
+        - returnDate
+        - lateFee
+       
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+              

@@ -1,0 +1,88 @@
+
+
+
+TotalServiceLayer
+
+methods
+
+Customer
+    add
+    get
+    getall
+    update
+    delete
+
+Item
+    add
+    get
+    getall
+    update
+    delete
+
+
+Invoice
+    * use the InvoiceViewModel to create
+
+    add Invoice
+        * this will use the InvoiceViewModel to create
+        * new invoice
+        * new invoice_items based on item id's passed by the incoming object
+
+
+    find Invoice By Customer
+        * this will create a TotalInvoiceViewModel using customer id
+
+
+
+    delete Invoice
+    * this will also delete necessary invoice_item objects
+
+
+
+
+Invoice
+
+needs to contain List<InvoiceWithItem> object
+
+    Invoice_item
+        item
+        item
+
+    Invoice_item
+        item
+        item
+
+Invoice
+
+    Invoice_item
+        item
+        item
+
+    Invoice_item
+        item
+        item
+
+
+List of Invoice Id's
+
+Each invoice can include many invoice_item
+
+List to hold all invoice_items for each invoice
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
